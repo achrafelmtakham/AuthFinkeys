@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand font-weight-bold" [routerLink]="''" [routerLinkActive]="'active'"
+       [ngStyle]="{color: '#6050dc'}"><img src="assets/images/apple-touch-icon.png" height="30" width="30"/> FinTech </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+  
+        <li class="nav-item" *ngIf="authService.isAuthenticated() else unauthenticated">
+          <a class="nav-link" (click)="onLogout()" style="cursor: pointer"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+  
+        <!-- Unauthenticated users -->
+        <ng-template #unauthenticated>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/login'" [routerLinkActive]="'active'"><i class="fas fa-sign-in-alt"></i> Login</a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/signup'" [routerLinkActive]="'active'"><i class="fas fa-user-plus"></i> Sign up</a>
+          </li>
+        </ng-template>
+  
+      </ul>
+  
+      <!-- Display search form if user is authenticated -->
+      <form class="form-inline my-2 my-lg-0" [formGroup]="form" *ngIf="authService.isAuthenticated()">
+        <!-- Search input -->
+        <input class="form-control mr-sm-2" name="search" formControlName="search" [ngClass]="{'is-valid': form.controls.search.touched && form.controls.search.valid}" type="search" placeholder="Search" aria-label="Search">
+        <div class="invalid-feedback" *ngIf="form.controls.touched && form.controls.search.invalid">
+          Invalid search
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="form.controls.search.invalid" (click)="onShopSearch()"><i class="fas fa-search"></i> Search</button>
+      </form>
+    </div>
+  </nav>
